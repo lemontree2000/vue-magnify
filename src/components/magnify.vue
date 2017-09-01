@@ -1,17 +1,17 @@
 <template>
   <div class="vue-magnify">
-    <div class="preview-box" @mousemove="move($event)">
+    <div class="preview-box" @mousemove="move($event)"  @mouseout="out" ref="previewBox">
       <img width="100%" :src="previewImg" alt="">
-      <div class="hover-box" ></div>
+      <div class="hover-box" ref="hoverBox"></div>
     </div>
-    <div class="zoom-box" v-show="zoomVisiable">
-      <img :src="zoomImg" alt="">
+    <div class="zoom-box" v-show="zoomVisiable" ref="zoomBox">
+      <img :src="zoomImg" alt="" ref="bigImg">
     </div>
   </div>
 </template>
 
 <script>
-import {$, offset} from '../dom/dom';
+import {offset} from '../dom/dom';
 
 export default {
   name: 'vue-magnify',
@@ -32,36 +32,48 @@ export default {
     };
   },
   methods: {
+    out() {
+      this.zoomVisiable = false;
+    },
     move(ev) {
-      this.moveX = ev.clientX;
-      this.moveY = ev.clientY;
-      let oHoverBox = $('.hover-box');
-      let oPreviewBox = $('.preview-box');
-      let offsetLeft = offset(oPreviewBox).left;
-      let offsetTop = offset(oPreviewBox).top;
-      let houverWidth = oHoverBox.clientWidth;
-      let houverHeight = oHoverBox.clientHeight;
-      oHoverBox.style.left = `${this.moveX - offsetLeft - houverWidth / 2}px`;
-      oHoverBox.style.top = `${this.moveY - offsetTop - houverHeight / 2}px`;
-      let houverLeft = offset(oHoverBox).left;
-      let houverTop = offset(oHoverBox).top;
-      if (houverLeft <= offsetLeft) {
-        oHoverBox.style.left = 0;
-      }
-      if (houverTop <= offsetTop) {
-        oHoverBox.style.top = 0;
-      }
-      if (houverTop >= oPreviewBox.clientHeight) {
-        oHoverBox.style.top = oPreviewBox.clientHeight - houverHeight + 'px';
-      }
-      if (houverLeft >= oPreviewBox.clientWidth) {
-        oHoverBox.style.left = oPreviewBox.clientWidth - houverHeight + 'px';
-      }
+      this.init();
+      let moveX = ev.clientX;
+      let moveY = ev.clientY;
+      let offsetLeft = offset(this.oPreviewBox).left;
+      let offsetTop = offset(this.oPreviewBox).top;
+      let left = moveX - offsetLeft - this.houverWidth / 2;
+      let top = moveY - offsetTop - this.houverHeight / 2;
+      let maxWidth = this.pWidth - this.houverWidth;
+      let maxHeight = this.pWidth - this.houverHeight;
+
+      left = left < 0 ? 0 : left > maxWidth ? maxWidth : left;
+      top = top < 0 ? 0 : top > maxHeight ? maxHeight : top;
+      let percentX = left / (maxWidth);
+      let percentY = top / (maxHeight);
+
+      this.oHoverBox.style.left = left + 'px';
+      this.oHoverBox.style.top = top + 'px';
+      this.oBigImg.style.left = percentX * (this.bWidth - this.imgWidth) + 'px';
+      this.oBigImg.style.top = percentY * (this.bHeight - this.imgHeight) + 'px';
+      this.$emit('move', ev);
+      this.zoomVisiable = true;
+    },
+    init() {
+      this.oHoverBox = this.$refs.hoverBox;
+      this.oPreviewBox = this.$refs.previewBox;
+      this.oBigImg = this.$refs.bigImg;
+      this.imgBox = this.$refs.zoomBox;
+
+      this.houverWidth = this.oHoverBox.offsetWidth;
+      this.houverHeight = this.oHoverBox.offsetHeight;
+      this.pWidth = this.oPreviewBox.offsetWidth;
+      this.pHeight = this.oPreviewBox.offsetHeight;
+
+      this.imgWidth = this.oBigImg.offsetWidth;
+      this.imgHeight = this.oBigImg.offsetHeight;
+      this.bWidth = this.imgBox.offsetWidth;
+      this.bHeight = this.imgBox.offsetHeight;
     }
-  },
-  created() {
-    this.moveX = 0;
-    this.moveY = 0;
   }
 };
 </script>
@@ -69,6 +81,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
   .vue-magnify {
+    position: relative;
     .preview-box {
       width: 430px;
       height: 430px;
@@ -85,9 +98,24 @@ export default {
         width: 100px;
         height: 100px;
         border: 1px solid #545454;
-        background: rgba(199, 49, 49, 0.5);
+        background: url('https://img-tmdetail.alicdn.com/tps/i4/T12pdtXaldXXXXXXXX-2-2.png') repeat 0 0;
         cursor: move;
         user-select: none;
+      }
+    }
+    .zoom-box {
+      width: 430px;
+      height: 430px;
+      overflow: hidden;
+      position: absolute;
+      left: 435px;
+
+      border: 1px solid #dc7a7a;;
+      top: 0;
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     }
   }

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <vue-magnify :previewImg="data.min" :zoomImg="data.max"></vue-magnify>
+    <vue-magnify :previewImg="data.min" :zoomImg="data.max"></vue-magnify>
   </div>
 </template>
 
