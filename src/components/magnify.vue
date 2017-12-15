@@ -37,8 +37,10 @@ export default {
     },
     move(ev) {
       this.init();
-      let moveX = ev.clientX;
-      let moveY = ev.clientY;
+      const scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+      const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+      let moveX = ev.clientX + scrollX;
+      let moveY = ev.clientY + scrollY;
       let offsetLeft = offset(this.oPreviewBox).left;
       let offsetTop = offset(this.oPreviewBox).top;
       let left = moveX - offsetLeft - this.houverWidth / 2;
