@@ -16,6 +16,7 @@
 
 #  clone git repository   克隆项目
 git clone https://github.com/lemontree2000/vue-magnify.git
+
 # install dependencies  安装依赖
 npm install
 

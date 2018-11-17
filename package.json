@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Edward <gonelove.guo@gmail.com>",
-  "private": true,
+  "private": false,
+  "main": "src/index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
