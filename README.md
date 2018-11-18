@@ -3,11 +3,30 @@
 > 这是一个vue 放大镜组件，主要用于电商网站展示图片
 
 
-![vue](/static/image/pre.png)
+![vue](https://github.com/lemontree2000/vue-magnify/raw/master/static/image/pre.png)
 
 ## How use / 怎么使用
 
-> 暂时没有上传npm, 你可以把magnify.vue复制到你的项目中去。 欢迎fork一起开发这个组件.
+
+```bash
+npm i vue-magnify
+```
+
+```javascript
+// main.js
+import vueMagnify from 'vue-magnify';
+Vue.use(vueMagnify);
+```
+```html
+<!-- *.vue -->
+<vue-magnify
+  @move="handleMove"
+  :previewImg="data.min"
+  :zoomImg="data.max">
+</vue-magnify>
+```
+
+> 欢迎fork一起开发改进
 
 ## preview / 预览
 
