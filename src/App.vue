@@ -1,33 +1,32 @@
 <template>
   <div id="app">
-    <vue-magnify :previewImg="data.min" :zoomImg="data.max"></vue-magnify>
-    <vue-magnify :previewImg="data.min" :zoomImg="data.max"></vue-magnify>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view />
   </div>
 </template>
 
-<script>
-import vueMagnify from './components/magnify';
+<style lang="less">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-export default {
-  name: 'app',
-  components: {
-    vueMagnify
-  },
-  data() {
-    return {
-      data: {
-        min: 'https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg_430x430q90.jpg',
-        max: 'https://img.alicdn.com/imgextra/i3/2857774462/TB21fgcwwNlpuFjy0FfXXX3CpXa_!!2857774462.jpg'
-      }
-    };
-  }
-};
-</script>
+#nav {
+  padding: 30px;
 
-<style lang="less" scoped>
-  #app {
-    margin-left: 100px;
-    margin-top: 100px;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
   }
+}
 </style>
-
