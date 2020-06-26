@@ -1,0 +1,17 @@
+.vue-magnify {
+  cursor: move;
+  &-preview {
+    position: relative;
+    width: 450px;
+    height: 450px;
+    .follow-unit {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      left: 0;
+      top: 0;
+      user-select: none;
+      background: url('~@/assets/unit-dot.png')  repeat;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { App } from 'vue'
-import Magnify from '../packages/magnify/index'
+import Magnify from '../packages/magnify/index.vue'
 
 export default {
   install(Vue: App, options: object) {
