@@ -1,13 +1,14 @@
 <template>
   <div class="vue-magnify-preview" ref="previewWarrperRef">
     {{ x }},{{ y }}{{ followStyle }}
-    <img :src="previewImg" width="400" alt="preview-img" ref="previewRef" />
+    <img :src="previewImg" width="400" alt="preview-img"  />
     <span
       class="follow-unit"
       :style="followStyle"
       v-show="isInside"
       ref="followRef"
     >
+      <i></i>
     </span>
   </div>
 </template>
@@ -15,34 +16,35 @@
 <script lang="ts">
 import { useHoverElement } from '@/hooks/useHoverElement'
 import { useElementRect } from '@/hooks/useElementRect'
-import { ref, computed, onMounted, reactive, watch, nextTick } from 'vue'
-
+import { ref, computed, watch, inject } from 'vue'
+import { MagnifyProvide } from '../types'
 export default {
   props: ['previewImg'],
   components: {},
   setup() {
-    const previewRef = ref(null)
     const followRef = ref(null)
     const previewWarrperRef = ref(null)
-    const { x, y, isInside, width, height } = useHoverElement(previewWarrperRef)
+    const {
+      offsetLeft,
+      offsetTop,
+      isInside,
+      width,
+      height,
+      x,
+      y
+    } = useHoverElement(previewWarrperRef)
+    const { setZoomVisible } = inject('magnify') as MagnifyProvide
 
     const followStyle = computed(() => {
       const { width: fWidth, height: fHeight } = useElementRect(followRef)
+      const maxLeft = width.value - fWidth.value
+      const maxTop = height.value - fHeight.value
 
-      let left = x.value - fWidth.value / 2
-      let top = y.value - fHeight.value / 2
+      let left = x.value - offsetLeft.value - fWidth.value / 2
+      let top = y.value - offsetTop.value - fHeight.value / 2
 
-      if (left > width.value - fWidth.value) {
-        left = width.value - fWidth.value
-      } else if (left < 0) {
-        left = 0
-      }
-
-      if (top > height.value - fHeight.value) {
-        top = height.value - fHeight.value
-      } else if (top < 0) {
-        top = 0
-      }
+      left = left > 0 ? Math.min(left, maxLeft) : 0
+      top = top > 0 ? Math.min(top, maxTop) : 0
 
       return {
         left: left + 'px',
@@ -50,11 +52,14 @@ export default {
       }
     })
 
+    watch(isInside, setZoomVisible)
+
     return {
+      offsetLeft,
+      offsetTop,
       x,
       y,
       isInside,
-      previewRef,
       followRef,
       followStyle,
       previewWarrperRef

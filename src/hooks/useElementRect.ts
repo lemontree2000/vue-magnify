@@ -10,6 +10,9 @@ export function useElementRect(target: Ref<HTMLElement | null>) {
     target,
     (el, _preEl) => {
       if (el) {
+        const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+        const scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft
+
         const rect = el.getBoundingClientRect()
         eleX.value = rect.x
         eleY.value = rect.y

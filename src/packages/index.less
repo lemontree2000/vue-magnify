@@ -1,9 +1,11 @@
 .vue-magnify {
   cursor: move;
   &-preview {
+    overflow: hidden;
     position: relative;
     width: 450px;
     height: 450px;
+    border: 1px solid grey;
     .follow-unit {
       position: absolute;
       width: 120px;
@@ -11,7 +13,16 @@
       left: 0;
       top: 0;
       user-select: none;
-      background: url('~@/assets/unit-dot.png')  repeat;
+      background: url('~@/assets/unit-dot.png') repeat;
+      i {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 2px;
+        background: red;
+      }
     }
   }
 }

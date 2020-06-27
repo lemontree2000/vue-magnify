@@ -11,7 +11,9 @@ export function useHoverElement(target: Ref<HTMLElement | null>) {
   const height = ref(0)
   const eleRightX = ref(0)
   const eleRightY = ref(0)
-  
+  const offsetLeft = ref(0)
+  const offsetTop = ref(0)
+
   watch(
     target,
     (el, _preEL, onCleanup) => {
@@ -23,17 +25,22 @@ export function useHoverElement(target: Ref<HTMLElement | null>) {
           y: rectY
         } = el!.getBoundingClientRect()
 
+        const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+        const scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft
+
         x.value = event.pageX
         y.value = event.pageY
+        offsetLeft.value = scrollLeft + rectX
+        offsetTop.value = scrollTop + rectY
+
         width.value = rectWidth
         height.value = rectHeight
         isInside.value = false
 
         eleX.value = rectX
         eleY.value = rectY
-
-        eleRightX.value = eleX.value + rectWidth
-        eleRightY.value = eleY.value + rectHeight
+        eleRightX.value = eleX.value + rectWidth + scrollLeft
+        eleRightY.value = eleY.value + rectHeight + scrollTop
 
         if (
           x.value > eleX.value &&
@@ -69,6 +76,8 @@ export function useHoverElement(target: Ref<HTMLElement | null>) {
     height,
     eleRightX,
     eleRightY,
-    isInside
+    isInside,
+    offsetLeft,
+    offsetTop
   }
 }
