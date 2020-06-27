@@ -1,54 +1,63 @@
 <template>
-  <div class="vue-magnify-preview">
-    {{ x }}
-    {{ y }}
-    {{ followStyle }}
-    <img :src="previewImg" alt="preview-img" ref="previewRef" />
+  <div class="vue-magnify-preview" ref="previewWarrperRef">
+    {{ x }},{{ y }}{{ followStyle }}
+    <img :src="previewImg" width="400" alt="preview-img" ref="previewRef" />
     <span
       class="follow-unit"
       :style="followStyle"
-      v-show="isFollowVisible"
+      v-show="isInside"
       ref="followRef"
     >
     </span>
-    <button @click="stop">click</button>
   </div>
 </template>
 
 <script lang="ts">
 import { useHoverElement } from '@/hooks/useHoverElement'
 import { useElementRect } from '@/hooks/useElementRect'
-import { ref, computed } from 'vue'
-
-// const defStyle = {
-//   left: 0,
-//   top: 0
-// }
+import { ref, computed, onMounted, reactive, watch, nextTick } from 'vue'
 
 export default {
   props: ['previewImg'],
+  components: {},
   setup() {
     const previewRef = ref(null)
     const followRef = ref(null)
-    const { x, y, isInside } = useHoverElement(previewRef)
-    const { width, height } = useElementRect(previewRef)
-    console.log(width.value, height.value)
+    const previewWarrperRef = ref(null)
+    const { x, y, isInside, width, height } = useHoverElement(previewWarrperRef)
+
     const followStyle = computed(() => {
+      const { width: fWidth, height: fHeight } = useElementRect(followRef)
+
+      let left = x.value - fWidth.value / 2
+      let top = y.value - fHeight.value / 2
+
+      if (left > width.value - fWidth.value) {
+        left = width.value - fWidth.value
+      } else if (left < 0) {
+        left = 0
+      }
+
+      if (top > height.value - fHeight.value) {
+        top = height.value - fHeight.value
+      } else if (top < 0) {
+        top = 0
+      }
+
       return {
-        left: x.value + 'px',
-        top: y.value + 'px'
+        left: left + 'px',
+        top: top + 'px'
       }
     })
 
-    const isFollowVisible = computed(() => isInside.value)
     return {
       x,
       y,
-      isFollowVisible,
       isInside,
       previewRef,
       followRef,
-      followStyle
+      followStyle,
+      previewWarrperRef
     }
   }
 }

@@ -1,4 +1,4 @@
-import { computed, Ref, ref, watch } from 'vue'
+import { Ref, ref, watch } from 'vue'
 
 export function useElementRect(target: Ref<HTMLElement | null>) {
   const width = ref(0)
@@ -8,17 +8,18 @@ export function useElementRect(target: Ref<HTMLElement | null>) {
 
   watch(
     target,
-    (el, preEl) => {
+    (el, _preEl) => {
       if (el) {
         const rect = el.getBoundingClientRect()
         eleX.value = rect.x
-        eleY.value = rect.x
+        eleY.value = rect.y
         width.value = rect.width
         height.value = rect.height
       }
     },
     { immediate: true }
   )
+
   return {
     width,
     height,
