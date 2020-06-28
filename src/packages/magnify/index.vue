@@ -1,15 +1,15 @@
 <template>
   <section class="vue-magnify">
-    {{ isZoomVisible }}
     <magnify-preview :preview-img="previewImg" />
     <magnify-zoom :zoom-img="zoomImg" />
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from 'vue'
+import { defineComponent, ref, provide, reactive } from 'vue'
 import MagnifyPreview from '../magnify-preview/index.vue'
 import MagnifyZoom from '../magnify-zoom/index.vue'
+import { FollowInfo } from '../types'
 
 export default defineComponent({
   name: 'vue-magnify',
@@ -36,17 +36,33 @@ export default defineComponent({
   setup() {
     // console.log(ctx)
     const isZoomVisible = ref(false)
+    const followElRect = reactive({
+      x: 0,
+      y: 0,
+      height: 0,
+      width: 0
+    })
     const setZoomVisible = (v: boolean) => {
       isZoomVisible.value = v
     }
 
+    const setFollowInfo = (v: FollowInfo) => {
+      followElRect.x = v.x
+      followElRect.y = v.y
+      followElRect.width = v.width
+      followElRect.height = v.height
+    }
+
     provide('magnify', {
       isZoomVisible,
-      setZoomVisible
+      setZoomVisible,
+      setFollowInfo,
+      followElRect
     })
 
     return {
-      isZoomVisible
+      isZoomVisible,
+      followElRect
     }
   }
 })

@@ -33,10 +33,15 @@ export default {
       x,
       y
     } = useHoverElement(previewWarrperRef)
-    const { setZoomVisible } = inject('magnify') as MagnifyProvide
+    const { setZoomVisible, setFollowInfo } = inject(
+      'magnify'
+    ) as MagnifyProvide
 
     const followStyle = computed(() => {
-      const { width: fWidth, height: fHeight } = useElementRect(followRef)
+      const { width: fWidth, height: fHeight, eleX, eleY } = useElementRect(
+        followRef
+      )
+
       const maxLeft = width.value - fWidth.value
       const maxTop = height.value - fHeight.value
 
@@ -45,6 +50,13 @@ export default {
 
       left = left > 0 ? Math.min(left, maxLeft) : 0
       top = top > 0 ? Math.min(top, maxTop) : 0
+
+      setFollowInfo({
+        x: eleX.value,
+        y: eleY.value,
+        width: fWidth.value,
+        height: fHeight.value
+      })
 
       return {
         left: left + 'px',
