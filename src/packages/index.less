@@ -8,8 +8,9 @@
     border: 1px solid grey;
     .follow-unit {
       position: absolute;
-      width: 120px;
-      height: 120px;
+      // 视口宽（小图的显示容器） = 大视口宽（大图的显示容器）/大展品宽（大图） * 小展品（小图）
+      // width: 253.125px;
+      // height: 253.125px;
       left: 0;
       top: 0;
       user-select: none;
@@ -26,6 +27,7 @@
     }
   }
   &-zoom {
+    // TODO 参数化
     width: 450px;
     height: 450px;
     overflow: hidden;

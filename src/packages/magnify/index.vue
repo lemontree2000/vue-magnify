@@ -1,15 +1,24 @@
 <template>
   <section class="vue-magnify">
+    <!-- 处理边距造成的移动不准 -->
+    {{ followSize }}
     <magnify-preview :preview-img="previewImg" />
     <magnify-zoom :zoom-img="zoomImg" />
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, reactive } from 'vue'
+import {
+  defineComponent,
+  ref,
+  provide,
+  reactive,
+  onMounted,
+  computed
+} from 'vue'
 import MagnifyPreview from '../magnify-preview/index.vue'
 import MagnifyZoom from '../magnify-zoom/index.vue'
-import { FollowInfo } from '../types'
+import { PrveiwInfo } from '../types'
 
 export default defineComponent({
   name: 'vue-magnify',
@@ -27,42 +36,108 @@ export default defineComponent({
     zoomImg: {
       type: String,
       required: true
+    },
+    defaultPrevSize: {
+      type: Object,
+      default: () => ({
+        width: 450,
+        height: 450
+      })
     }
   },
   components: {
     MagnifyPreview,
     MagnifyZoom
   },
-  setup() {
+  setup(ctx) {
     // console.log(ctx)
     const isZoomVisible = ref(false)
-    const followElRect = reactive({
-      x: 0,
-      y: 0,
-      height: 0,
-      width: 0
+    const prveiwInfo = reactive({
+      followX: 0,
+      followY: 0,
+      followW: 0,
+      followH: 0,
+      followMaxX: 0,
+      followMaxY: 0
     })
+    const zoomImgSize = reactive({
+      w: 0,
+      h: 0
+    })
+
+    const zoomSize = reactive({
+      w: 0,
+      h: 0
+    })
+
+    const prevSize = reactive({
+      w: 0,
+      h: 0
+    })
+
     const setZoomVisible = (v: boolean) => {
       isZoomVisible.value = v
     }
-
-    const setFollowInfo = (v: FollowInfo) => {
-      followElRect.x = v.x
-      followElRect.y = v.y
-      followElRect.width = v.width
-      followElRect.height = v.height
+    /**
+     * TODO 优化下面代码
+     */
+    const setFollowInfo = (v: PrveiwInfo) => {
+      prveiwInfo.followX = v.followX
+      prveiwInfo.followY = v.followY
+      prveiwInfo.followW = v.followW
+      prveiwInfo.followH = v.followH
+      prveiwInfo.followMaxX = v.followMaxX
+      prveiwInfo.followMaxY = v.followMaxY
     }
 
+    const setZoomImgInfo = (v: { h: number; w: number }) => {
+      zoomImgSize.w = v.w
+      zoomImgSize.h = v.h
+    }
+
+    const followSize = computed(() => {
+      return {
+        w: prevSize.w * (zoomSize.w / zoomImgSize.w),
+        h: prevSize.h * (zoomSize.h / zoomImgSize.h)
+      }
+    })
+
+    console.log(followSize)
+
+    function initZoomSize() {
+      zoomSize.w = prevSize.w
+      zoomSize.h = prevSize.h
+    }
+
+    function initPrevSize() {
+      prevSize.w = ctx.defaultPrevSize.width
+      prevSize.h = ctx.defaultPrevSize.height
+    }
+
+    function init() {
+      initPrevSize()
+      initZoomSize()
+    }
+
+    onMounted(() => {
+      init()
+    })
     provide('magnify', {
       isZoomVisible,
       setZoomVisible,
       setFollowInfo,
-      followElRect
+      prveiwInfo,
+      setZoomImgInfo,
+      followSize
     })
 
     return {
       isZoomVisible,
-      followElRect
+      prveiwInfo,
+      zoomImgSize,
+      followSize,
+      zoomSize,
+      prevSize
     }
   }
 })

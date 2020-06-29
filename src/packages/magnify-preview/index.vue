@@ -1,7 +1,6 @@
 <template>
   <div class="vue-magnify-preview" ref="previewWarrperRef">
-    {{ x }},{{ y }}{{ followStyle }}
-    <img :src="previewImg" width="400" alt="preview-img"  />
+    <img :src="previewImg" alt="preview-img" />
     <span
       class="follow-unit"
       :style="followStyle"
@@ -33,7 +32,7 @@ export default {
       x,
       y
     } = useHoverElement(previewWarrperRef)
-    const { setZoomVisible, setFollowInfo } = inject(
+    const { setZoomVisible, setFollowInfo, followSize } = inject(
       'magnify'
     ) as MagnifyProvide
 
@@ -52,13 +51,17 @@ export default {
       top = top > 0 ? Math.min(top, maxTop) : 0
 
       setFollowInfo({
-        x: eleX.value,
-        y: eleY.value,
-        width: fWidth.value,
-        height: fHeight.value
+        followX: eleX.value,
+        followY: eleY.value,
+        followW: fWidth.value,
+        followH: fHeight.value,
+        followMaxX: maxLeft,
+        followMaxY: maxTop
       })
 
       return {
+        width: followSize.value.w + 'px',
+        height: followSize.value.w + 'px',
         left: left + 'px',
         top: top + 'px'
       }

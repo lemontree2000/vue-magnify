@@ -1,15 +1,24 @@
-import { Ref } from 'vue';
+import { Ref, ComputedRef } from 'vue'
 
 export interface MagnifyProvide {
   isZoomVisible: Ref<boolean>
-  followElRect: FollowInfo
+  prveiwInfo: PrveiwInfo,
+  followSize: ComputedRef<ElRect>
   setZoomVisible: (val: boolean) => void
-  setFollowInfo:(val: FollowInfo) => void
+  setFollowInfo: (val: PrveiwInfo) => void
+  setZoomImgInfo: (val: { w: number; h: number }) => void
 }
 
-export interface FollowInfo {
-  width: number,
-  height: number,
-  x: number,
-  y: number
+export interface PrveiwInfo {
+  followW: number
+  followH: number
+  followX: number
+  followY: number
+  followMaxX: number
+  followMaxY: number
+}
+
+export interface ElRect {
+  w: number,
+  h: number
 }
