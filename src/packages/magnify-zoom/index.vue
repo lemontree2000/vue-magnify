@@ -1,7 +1,11 @@
 <template>
-  <div class="vue-magnify-zoom" ref="zoomRef">
+  <div
+    class="vue-magnify-zoom"
+    ref="zoomRef"
+    :style="{ width: zoomSize.w + 'px', height: zoomSize.h + 'px' }"
+  >
     <!-- {{ scaleInfo }} -->
-    <img :src="zoomImg" ref="imgRef" alt="zoom-img" />
+    <img :src="zoomImg" ref="imgRef" />
   </div>
 </template>
 
@@ -12,7 +16,9 @@ import { useElementRect } from '../../hooks/useElementRect'
 export default {
   props: ['zoomImg'],
   setup() {
-    const { prveiwInfo, setZoomImgInfo } = inject('magnify') as MagnifyProvide
+    const { prveiwInfo, setZoomImgInfo, zoomSize } = inject(
+      'magnify'
+    ) as MagnifyProvide
     const zoomRef = ref(null) as Ref<HTMLImageElement | null>
     const imgRef = ref(null) as Ref<HTMLImageElement | null>
     const scaleInfo = computed(() => {
@@ -27,9 +33,7 @@ export default {
         height
       })
     })
-    console.log(imgRef)
     onMounted(() => {
-      console.log(imgRef)
       if (imgRef.value) {
         imgRef.value.addEventListener('load', function() {
           setZoomImgInfo({ w: this.width, h: this.height })
@@ -38,11 +42,11 @@ export default {
     })
 
     watch(scaleInfo, val => {
-      if (zoomRef.value) {
+      if (zoomRef.value && imgRef.value) {
         // 移动距离 = 比例 * 最大可移动距离
         zoomRef.value.scrollTo(
-          val.scaleX * Math.abs(val.width - 800),
-          val.scaleY * Math.abs(val.height - 800)
+          val.scaleX * Math.abs(zoomSize.w - imgRef.value.width),
+          val.scaleY * Math.abs(zoomSize.h - imgRef.value.height)
         )
       }
     })
@@ -51,7 +55,8 @@ export default {
       prveiwInfo,
       scaleInfo,
       zoomRef,
-      imgRef
+      imgRef,
+      zoomSize
     }
   }
 }

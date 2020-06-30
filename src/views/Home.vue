@@ -1,6 +1,12 @@
 <template>
   <div class="home">
     <vue-magnify :preview-img="previewImg" :zoom-img="zoomImg"></vue-magnify>
+    <!-- 设置放大区域的尺寸 -->
+    <vue-magnify
+      :preview-img="previewImg"
+      :zoom-img="zoomImg"
+      :default-zoom-size="{ width: 500, height: 600 }"
+    ></vue-magnify>
   </div>
 </template>
 

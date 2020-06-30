@@ -2,8 +2,9 @@ import { Ref, ComputedRef } from 'vue'
 
 export interface MagnifyProvide {
   isZoomVisible: Ref<boolean>
-  prveiwInfo: PrveiwInfo,
+  prveiwInfo: PrveiwInfo
   followSize: ComputedRef<ElRect>
+  zoomSize: ElRect
   setZoomVisible: (val: boolean) => void
   setFollowInfo: (val: PrveiwInfo) => void
   setZoomImgInfo: (val: { w: number; h: number }) => void

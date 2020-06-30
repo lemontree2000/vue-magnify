@@ -1,7 +1,9 @@
 <template>
-  <section class="vue-magnify">
+  <section class="vue-magnify" :style="previewStyle">
     <!-- 处理边距造成的移动不准 -->
-    {{ followSize }}
+    <!-- {{ followSize }}
+    <p>1</p>
+    <p>1</p> -->
     <magnify-preview :preview-img="previewImg" />
     <magnify-zoom :zoom-img="zoomImg" />
   </section>
@@ -43,6 +45,10 @@ export default defineComponent({
         width: 450,
         height: 450
       })
+    },
+    defaultZoomSize: {
+      type: Object,
+      default: () => null
     }
   },
   components: {
@@ -50,7 +56,6 @@ export default defineComponent({
     MagnifyZoom
   },
   setup(ctx) {
-    // console.log(ctx)
     const isZoomVisible = ref(false)
     const prveiwInfo = reactive({
       followX: 0,
@@ -102,11 +107,21 @@ export default defineComponent({
       }
     })
 
-    console.log(followSize)
+    const previewStyle = computed(() => {
+      return {
+        width: prevSize.w + 'px',
+        height: prevSize.h + 'px'
+      }
+    })
 
     function initZoomSize() {
-      zoomSize.w = prevSize.w
-      zoomSize.h = prevSize.h
+      if (ctx.defaultZoomSize) {
+        zoomSize.w = ctx.defaultZoomSize.width
+        zoomSize.h = ctx.defaultZoomSize.height
+      } else {
+        zoomSize.w = prevSize.w
+        zoomSize.h = prevSize.h
+      }
     }
 
     function initPrevSize() {
@@ -128,7 +143,8 @@ export default defineComponent({
       setFollowInfo,
       prveiwInfo,
       setZoomImgInfo,
-      followSize
+      followSize,
+      zoomSize
     })
 
     return {
@@ -137,7 +153,8 @@ export default defineComponent({
       zoomImgSize,
       followSize,
       zoomSize,
-      prevSize
+      prevSize,
+      previewStyle
     }
   }
 })

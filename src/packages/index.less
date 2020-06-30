@@ -1,5 +1,6 @@
 .vue-magnify {
   cursor: move;
+  position: relative;
   &-preview {
     overflow: hidden;
     position: relative;
@@ -27,9 +28,10 @@
     }
   }
   &-zoom {
-    // TODO 参数化
-    width: 450px;
-    height: 450px;
+    border: 1px solid #eee;
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 452px;
   }
 }

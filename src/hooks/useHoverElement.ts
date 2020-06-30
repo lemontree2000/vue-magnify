@@ -32,7 +32,7 @@ export function useHoverElement(target: Ref<HTMLElement | null>) {
         y.value = event.pageY
         offsetLeft.value = scrollLeft + rectX
         offsetTop.value = scrollTop + rectY
-
+        
         width.value = rectWidth
         height.value = rectHeight
         isInside.value = false

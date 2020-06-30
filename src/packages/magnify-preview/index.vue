@@ -37,10 +37,7 @@ export default {
     ) as MagnifyProvide
 
     const followStyle = computed(() => {
-      const { width: fWidth, height: fHeight, eleX, eleY } = useElementRect(
-        followRef
-      )
-
+      const { width: fWidth, height: fHeight } = useElementRect(followRef)
       const maxLeft = width.value - fWidth.value
       const maxTop = height.value - fHeight.value
 
@@ -51,8 +48,8 @@ export default {
       top = top > 0 ? Math.min(top, maxTop) : 0
 
       setFollowInfo({
-        followX: eleX.value,
-        followY: eleY.value,
+        followX: left,
+        followY: top,
         followW: fWidth.value,
         followH: fHeight.value,
         followMaxX: maxLeft,
@@ -61,7 +58,7 @@ export default {
 
       return {
         width: followSize.value.w + 'px',
-        height: followSize.value.w + 'px',
+        height: followSize.value.h + 'px',
         left: left + 'px',
         top: top + 'px'
       }
