@@ -1,10 +1,10 @@
 <template>
   <section class="vue-magnify" :style="previewStyle">
-    <!-- 处理边距造成的移动不准 -->
-    <!-- {{ followSize }}
-    <p>1</p>
-    <p>1</p> -->
-    <magnify-preview :preview-img="previewImg" />
+    <magnify-preview :preview-img="previewImg" @click="handleClick">
+      <template class="preview-slot" v-slot:preview-slot>
+        <slot name="preview-slot" />
+      </template>
+    </magnify-preview>
     <magnify-zoom :zoom-img="zoomImg" />
   </section>
 </template>
@@ -155,6 +155,11 @@ export default defineComponent({
       zoomSize,
       prevSize,
       previewStyle
+    }
+  },
+  methods: {
+    handleClick(event: MouseEvent) {
+      this.$emit('on-preview-click', event)
     }
   }
 })

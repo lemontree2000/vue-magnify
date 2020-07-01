@@ -4,9 +4,10 @@
   &-preview {
     overflow: hidden;
     position: relative;
-    width: 450px;
-    height: 450px;
     border: 1px solid grey;
+    & > img {
+      width: 100%;
+    }
     .follow-unit {
       position: absolute;
       // 视口宽（小图的显示容器） = 大视口宽（大图的显示容器）/大展品宽（大图） * 小展品（小图）
@@ -15,7 +16,7 @@
       left: 0;
       top: 0;
       user-select: none;
-      background: url('~@/assets/unit-dot.png') repeat;
+      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAGUExURT1uzv///62t27cAAAACdFJOU/8A5bcwSgAAABBJREFUeNpiYGBkYGQECDAAAA0ABMZIs2EAAAAASUVORK5CYII=') repeat;
       i {
         position: absolute;
         left: 50%;
@@ -32,6 +33,5 @@
     overflow: hidden;
     position: absolute;
     top: 0;
-    left: 452px;
   }
 }

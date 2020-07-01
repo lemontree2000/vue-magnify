@@ -2,9 +2,12 @@
   <div
     class="vue-magnify-zoom"
     ref="zoomRef"
-    :style="{ width: zoomSize.w + 'px', height: zoomSize.h + 'px' }"
+    :style="{
+      width: zoomSize.w + 'px',
+      height: zoomSize.h + 'px',
+      right: -zoomSize.w - 3 + 'px'
+    }"
   >
-    <!-- {{ scaleInfo }} -->
     <img :src="zoomImg" ref="imgRef" />
   </div>
 </template>

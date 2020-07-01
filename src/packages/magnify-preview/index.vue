@@ -1,6 +1,7 @@
 <template>
   <div class="vue-magnify-preview" ref="previewWarrperRef">
     <img :src="previewImg" alt="preview-img" />
+    <slot name="preview-slot"></slot>
     <span
       class="follow-unit"
       :style="followStyle"
