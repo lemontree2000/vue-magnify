@@ -165,4 +165,43 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" src="../index.less"></style>
+<style>
+.vue-magnify {
+  cursor: move;
+  position: relative;
+}
+.vue-magnify-preview {
+  overflow: hidden;
+  position: relative;
+  border: 1px solid grey;
+}
+.vue-magnify-preview > img {
+  width: 100%;
+}
+.vue-magnify-preview .follow-unit {
+  position: absolute;
+  /* 视口宽（小图的显示容器） = 大视口宽（大图的显示容器）/大展品宽（大图） * 小展品（小图） */
+  /* width: 253.125px; */
+  /* height: 253.125px; */
+  left: 0;
+  top: 0;
+  user-select: none;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAGUExURT1uzv///62t27cAAAACdFJOU/8A5bcwSgAAABBJREFUeNpiYGBkYGQECDAAAA0ABMZIs2EAAAAASUVORK5CYII=')
+    repeat;
+}
+.vue-magnify-preview .follow-unit i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 2px;
+  background: red;
+}
+.vue-magnify-zoom {
+  border: 1px solid #eee;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+</style>
