@@ -38,7 +38,7 @@
     "eslint-plugin-vue": "^7.0.0-alpha.0",
     "less-loader": "^5.0.0",
     "prettier": "^1.19.1",
-    "rollup": "2.18.2",
+    "rollup": "2.80.0",
     "rollup-plugin-css-only": "^2.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript": "1.0.1",
